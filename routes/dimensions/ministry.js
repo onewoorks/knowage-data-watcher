@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router();
 
-var connection = require('../../configs/databases/ep_cdc')
+var connection = require('../../app/configs/databases/ep_cdc')
 
 router.get('/', (req,res,next)=> {
     var query = "SELECT * FROM bi_dim_ministry "

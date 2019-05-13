@@ -3,7 +3,7 @@ var router = express.Router()
 
 const merging = require('../../packages/merging')
 
-var common = require('../../models/databases/ep_cdc')
+var common = require('../../app/models/databases/ep_cdc')
 
 router.get('/orders', (req, res, next) => {
     common.listTable(req,res,next)
@@ -32,5 +32,6 @@ router.get('/reload-fact-fulfilment', async (req, res, next)=>{
     merging.reloadFactFulfilment()
     res.json('ok')
 })
+
 
 module.exports = router;

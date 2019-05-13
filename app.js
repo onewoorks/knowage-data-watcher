@@ -5,6 +5,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var ghostRouter = require('./routes/ghost/sqlbinlog')
 
 var DimensionMinistry = require('./routes/dimensions/ministry')
 
@@ -22,5 +23,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/dimension', DimensionMinistry)
 app.use('/ep-database', EpCdcDatabase)
+app.use('/ghost', ghostRouter) 
 
 module.exports = app;

@@ -1,5 +1,5 @@
 const logger = require('../templates/logger')
-const fact_fulfilment = require('../models/cdccms/fact_fulfilment')
+const fact_fulfilment = require('../models/sample_feeder/fact_fulfilment')
 const moment = require('moment')
 const fs = require('fs')
 

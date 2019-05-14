@@ -8,14 +8,21 @@ module.exports = {
         logger.accept_message(data)
         //    sample_feeder.fulfilment(data)
         // fact_fulfilment.fulfilment_tables()
+        _clear_fact_with_current_year()
         _check_fulfilment_tables( (results) => {
             for(const result of results.summary){
                 _read_fulfilment_table(result)
-            }
-            
+            } 
         })
-
+    },
+    fulfilment_current: (data) =>{
+        _clear_fact_with_current_year()
+        let table = {
+            table_name: 'ep_fulfilment'
+        }
+        _read_fulfilment_table(table)
     }
+
 }
 
 _return_info = (x) => {
@@ -26,8 +33,8 @@ _return_info = (x) => {
     })
 }
 
-_refill_fact_with_current_year = () => {
-
+_clear_fact_with_current_year = () => {
+    fact_fulfilment.delete_current_year_fulfilment()
 }
 
 _check_fulfilment_tables = async (callback) => {
@@ -76,10 +83,8 @@ _create_temp_csv_file = async (table_name, data) => {
         })
         list.push(r)
     }
-
     await _writingCsv(table_name, list)
 }
-
 
 _writingCsv = (table_name, list_data) => {
     var lists = []

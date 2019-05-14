@@ -12,7 +12,6 @@ const fulfilment_tables = (callback) => {
             return callback(JSON.parse(JSON.stringify(rows)))
         }
     })
-
 }
 
 module.exports = {
@@ -28,8 +27,21 @@ module.exports = {
         db.sample_feeder.query(query, (err, rows, fields) => {
             return !err ? callback(db.return_result(rows)) : err
         })
-
     },
+    fulfilment_current_year: (callback) => {
+        var query = "SELECT * FROM ep_fulfilment"
+        db[db_name].query(query, (err, rows, fields)=>{
+            return (!err) ? callback(rows) : err
+        })
+    },
+    delete_current_year_fulfilment: () => {
+        var thisYear = new Date().getFullYear()
+        var query = `DELETE FROM fact_fulfilment WHERE YEAR(fl_created_date) = ${thisYear}`
+        db.sample_feeder.query(query, (err, rows, fields)=>{
+            if (!err) console.log(`${thisYear} - fulfilment data is deleted!\r\n`)
+        })  
+    },
+
     check_current_fact_table: (table, callback) => {
         var query = `SELECT count(*)
         AS total,
@@ -48,7 +60,6 @@ module.exports = {
         query += `ENCLOSED BY '"' `
         query += "LINES TERMINATED BY '\r\n' "
         query += "IGNORE 1 ROWS;"
-        console.log(query)
         await db.sample_feeder.query(query, (error, rows, next) => {
             return  (!error) ? callback({
                 status:"success",

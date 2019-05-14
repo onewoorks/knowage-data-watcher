@@ -30,7 +30,7 @@ router.post('/fulfilment', (req, res, next) => {
 
 router.post('/ep_fulfilment', (req, res, next) => {
     logger.receive_message(req.body)
-    sampleFeeder.fulfilment(req.body)
+    sampleFeeder.fulfilment_current(req.body)
     res.send()
 })
 

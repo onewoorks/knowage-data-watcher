@@ -1,6 +1,7 @@
 const db = require('../../configs/databases')
 const path = require('path')
 const db_name = path.basename(path.dirname(__filename))
+console.log(db_name)
 
 const fulfilment_tables = (callback) => {
     var query = `SELECT TABLE_NAME AS tables 

@@ -1,10 +1,10 @@
 var mysql = require('mysql')
 
-var ep_cdc = mysql.createConnection({
+var cdccms = mysql.createConnection({
     host: "localhost",
     user: "iwang",
     password: "Root@!234",
-    database: "ep_cdc"
+    database: "cdccms"
 })
 
 var sample_feeder = mysql.createConnection({
@@ -14,20 +14,20 @@ var sample_feeder = mysql.createConnection({
     database: "sample_feeder"
 })
 
-var knowage_ce = mysql.createConnection({
+var knowage_ep = mysql.createConnection({
     host: "localhost",
     user: "iwang",
     password: "Root@!234",
-    database: "sample_feeder"
+    database: "knowage_ep"
 })
 
-ep_cdc.connect(err=>{
+cdccms.connect(err=>{
     if(err) throw err
 })
 sample_feeder.connect(err=>{
     if(err) throw err
 })
-knowage_ce.connect(err=>{
+knowage_ep.connect(err=>{
     if(err) throw err
 })
 
@@ -35,8 +35,8 @@ const return_result = (result) => {
     return JSON.parse(JSON.stringify(result))
 }
 module.exports = {
-    ep_cdc,
+    cdccms,
     sample_feeder,
-    knowage_ce,
+    knowage_ep,
     return_result
 } 

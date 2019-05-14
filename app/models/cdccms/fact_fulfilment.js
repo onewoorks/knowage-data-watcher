@@ -60,7 +60,7 @@ module.exports = {
         query += `ENCLOSED BY '"' `
         query += "LINES TERMINATED BY '\r\n' "
         query += "IGNORE 1 ROWS;"
-        await db[db_name].query(query, (error, rows, next) => {
+        await db.knowage_ce.query(query, (error, rows, next) => {
             return  (!error) ? callback({
                 status:"success",
                 filename: info.filename

@@ -3,6 +3,7 @@ var router = express.Router();
 var logger = require('../../app/templates/logger')
 
 var sampleFeeder = require('../../app/controllers/sample_feeder')
+var cdccms = require('../../app/controllers/cdccms')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -30,7 +31,7 @@ router.post('/fulfilment', (req, res, next) => {
 
 router.post('/ep_fulfilment', (req, res, next) => {
     logger.receive_message(req.body)
-    sampleFeeder.fulfilment_current(req.body)
+    cdccms.fulfilment_current(req.body)
     res.send()
 })
 

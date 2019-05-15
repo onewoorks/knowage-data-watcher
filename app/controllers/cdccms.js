@@ -9,24 +9,27 @@ module.exports = {
     fulfilment: (data) => {
         logger.accept_message(data)
         _clear_fact_with_current_year()
-        _check_fulfilment_tables( (results) => {
-            for(const result of results.summary){
+        _check_fulfilment_tables((results) => {
+            for (const result of results.summary) {
                 _read_fulfilment_table(result)
-            } 
+            }
         })
     },
-    fulfilment_current: (data) =>{
+    fulfilment_current: (data) => {
         _clear_fact_with_current_year()
         let table = {
             table_name: 'ep_fulfilment'
         }
         _read_fulfilment_table(table)
     },
-    contract_current: (data) => {
-        ep_contract.clear_contract() 
-        ep_contract.reload_contract( result => {
-            common.create_tmp_csv_file('ep_contract','fact_contract',result)
-        })  
+    contract_current: (data) => { 
+        ep_contract.clear_contract(result => {
+            logger.single_line("\t>> Current fact table for contract TRUNCATED")
+            ep_contract.reload_contract(result => {
+                common.create_tmp_csv_file('ep_contract', 'fact_contract', result)
+            })
+        })
+
     }
 
 }
@@ -63,7 +66,7 @@ _check_fulfilment_tables = async (callback) => {
             }
             table_fulfilment.push(summary)
         }
-        let data = { 
+        let data = {
             table_category: 'ep_fulfilment',
             summary: table_fulfilment
         }
@@ -73,7 +76,7 @@ _check_fulfilment_tables = async (callback) => {
 }
 
 _read_fulfilment_table = (table) => {
-    fact_fulfilment.fulfilment_data( table, result => {
+    fact_fulfilment.fulfilment_data(table, result => {
         common.create_tmp_csv_file(table.table_name, 'fact_fulfilment', result)
     })
 }

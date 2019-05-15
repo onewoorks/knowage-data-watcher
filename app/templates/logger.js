@@ -1,10 +1,14 @@
 const saparator = "-----------------------------------------------------------"
 const host = "HOST MESSAGE : "
 const moment = require('moment')
+const dateformat = 'DD/MM/YYYY H:mm:s'
 
 var timenow = moment().format('DD MM YYYY H:mm:s')
 
 module.exports = {
+    single_line: (msg) =>{
+        console.log(msg)
+    },
     receive_message: (msg) => {
         console.log(saparator)
         console.log(moment().format('DD MM YYYY H:mm:s'))
@@ -21,8 +25,7 @@ module.exports = {
     },
     result_message: (msg) => {
         console.log(saparator)
-        console.log(moment().format('DD MM YYYY H:mm:s'))
-        console.log(host + 'Execution result >>>')
+        console.log(`${moment().format(dateformat)} > ${host} > Execution Result >>> `)
         console.log(msg)
         console.log('\r')
     },

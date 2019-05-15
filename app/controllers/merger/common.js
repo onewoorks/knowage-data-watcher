@@ -2,13 +2,10 @@ const moment = require('moment')
 const fs = require('fs')
 const logger = require('../../templates/logger')
 const db = require('../../configs/databases')
-
-
-var start_time_g = ''
+const dateformat = 'DD/MM/YYYY H:mm:s'
 
 _writingCsv = (table_name, fact_table, list_data) => {
     var lists = []
-
     list_data.forEach((value, key) => {
         if(key>0){
             list_data[key].shift()
@@ -16,7 +13,8 @@ _writingCsv = (table_name, fact_table, list_data) => {
         lists.push(list_data[key] + '\r\n')
     }) 
     let filename = `./csvs/${moment().unix()}_${table_name}.csv`
-    logger.wait_message("Script is trying to save a temporary file...")
+    logger.single_line("\t>> Script is trying to create a temporary file...")
+    var timestart = moment().format(dateformat)
     fs.writeFile(filename, lists, 'utf8', function (err) {
         let msg = {}
         if (err) {
@@ -26,9 +24,13 @@ _writingCsv = (table_name, fact_table, list_data) => {
             }
             logger.result_message(msg)
         } else {
+            
             msg = {
                 message: "Temporary file has been created!",
                 filename: filename,
+                time_start: timestart,
+                time_finish: moment().format(dateformat),
+                total_rows: lists.length-1
             }
             logger.result_message(msg)
             let info = {
@@ -39,10 +41,9 @@ _writingCsv = (table_name, fact_table, list_data) => {
                 logger.result_message(result)
                 fs.unlinkSync(result.filename)
             })
-        }
-        
+        } 
     });
-
+    
 }
 
 _uploadLoadInFile = async (info, callback) => {
@@ -55,26 +56,29 @@ _uploadLoadInFile = async (info, callback) => {
     query += "LINES TERMINATED BY '\r\n' "
     query += "IGNORE 1 ROWS;"
     await db.knowage_ep.query(query, (error, rows, next) => {
+        let r = JSON.parse(JSON.stringify(rows))
         return  (!error) ? callback({
             status:"SUCCESS",
             description: "Fact data successfully reload from reference database",
             filename: info.filename,
             time_start: start_time,
             time_finish: moment().format('DD/MM/YYYY H:mm:ss'),
+            total_rows: r.affectedRows
         }) : error
     })
 }
 
 _create_temp_csv_file = async (table_name, fact_table, data) => {
+    logger.single_line('\t>> Total Rows from origin : '+ data.length)
     let list = []
     var header = Object.keys(data[0])
     list.push(header)
     var i = 1
     for(const d of data){
-        
         let r = []
         header.forEach((value,key)=>{
-            r.push('"'+d[value]+'"')
+            var e = (d[value] == null) ? '' : d[value].toString()
+            r.push('"'+ e.replace(/"/g,'\\"') +'"')
         })
         r[0] = i
         list.push(r)

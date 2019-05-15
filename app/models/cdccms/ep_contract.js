@@ -4,7 +4,7 @@ const db_name = path.basename(path.dirname(__filename))
 
 module.exports = {
     clear_contract: (callback) => {
-        var query = "DELETE * FROM fact_contract"
+        var query = "TRUNCATE TABLE fact_contract"
         db.knowage_ep.query(query, (err, rows, next)=> {
             return (!err) ? callback(db.return_result(rows)) : err
         })

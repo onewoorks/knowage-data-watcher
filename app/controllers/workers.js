@@ -1,10 +1,17 @@
-var sampleFeeder = require('../models/sample_feeder')
+// var sseMW = require('../middleware/sse');
+// var sseClients = new sseMW.Topic();
 
-newWorker = (data) => {
-    console.log('new worker info')
-    console.log(data)
-}
 
-module.exports = {
-    new_worker_list: newWorker
-}
+// var m;
+// updateSseClients = (message) => {
+//     this.m = message;
+//     sseClients.forEach((sseConnection) => {
+//         sseConnection.send(this.m);
+//     }
+//         , this
+//     );
+// }
+
+// module.exports = {
+//     updateSseClients
+// }

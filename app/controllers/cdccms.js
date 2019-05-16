@@ -4,6 +4,9 @@ const ep_contract = require('../models/cdccms/ep_contract')
 const moment = require('moment')
 const fs = require('fs')
 const common = require('./merger/common')
+var worker = require('../controllers/workers')
+
+var ssej = require('../../routes/sse')
 
 module.exports = {
     fulfilment: (data) => {
@@ -16,6 +19,7 @@ module.exports = {
         })
     },
     fulfilment_current: (data) => {
+        
         _clear_fact_with_current_year()
         let table = {
             table_name: 'ep_fulfilment'
